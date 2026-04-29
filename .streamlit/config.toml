@@ -3,13 +3,13 @@
 primaryColor = "#004d99"
 
 # Fond blanc pur pour la clarté
-backgroundColor = "#ffffff93"
+backgroundColor = "#ffffff"
 
 # Gris très clair pour la barre latérale et les zones secondaires
-secondaryBackgroundColor = "#f8faf98e"
+secondaryBackgroundColor = "#255dcde9"
 
 # Texte sombre (presque noir) pour une lecture parfaite
-textColor = "#141518ff"
+textColor = "rgb(2, 5, 15)"
 
 # Police sans-serif moderne
 font = "sans serif"
