@@ -6,7 +6,7 @@ import os
 # 1. Configuration de la page (Design épuré)
 st.set_page_config(
     page_title="VaxData | Collecte & Analyse",
-    page_icon="​🚑​",
+    page_icon="​",
     layout="wide"
 )
 
