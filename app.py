@@ -3,124 +3,124 @@ import pandas as pd
 import plotly.express as px
 import os
 
-# 1. Configuration de la page (Design épuré)
+# 1. Configuration de la page
 st.set_page_config(
     page_title="VaxData | Collecte & Analyse",
-    page_icon="🛡️​",
+    page_icon="🏥",
     layout="wide"
 )
 
-# 2. Barre latérale pour la navigation
+# Icône de secours (Lien direct valide vers une icône de santé)
+ICON_URL = "https://cdn-icons-png.flaticon.com/512/2966/2966486.png"
+
+# 2. Barre latérale (Sidebar) avec un peu plus de style
 with st.sidebar:
-    st.title("VaxData 1.0")
+    st.image(ICON_URL, width=100)
+    st.title("Système VaxData")
+    st.markdown("---")
     page = st.radio(
-        "Menu Principal",
-        ["Accueil", "Collecte de Données", "📊 Dashboard d'Analyse"],
+        "Navigation",
+        ["Accueil", "Enregistrement", "📊 Dashboard Analyse"],
         index=0
     )
-    st.divider()
-    st.info("Projet Universitaire - Collecte Vaccination (0-10 ans)")
+    st.sidebar.markdown("---")
+    st.sidebar.caption("© 2026 - Plateforme de Santé Infantile")
 
-# 3. Logique de la Page d'Accueil
+# --- Initialisation du CSV (Automatique et robuste) ---
+CSV_FILE = 'data.csv'
+
+# 3. Page d'Accueil
 if page == "Accueil":
-    st.title("Bienvenue sur la plateforme VaxData")
-    
+    st.title("🛡️ Bienvenue sur VaxData")
     col1, col2 = st.columns([2, 1])
     with col1:
-        st.markdown("""
-        ### Mission de l'application
-        Cette interface professionnelle est conçue pour les agents de santé et les administrateurs. 
-        Elle permet de :
-        * **Collecter** les données de vaccination en temps réel.
-        * **Suivre** la couverture vaccinale par ville et par région.
-        * **Analyser** les performances des campagnes mobiles par rapport aux hôpitaux.
+        st.info("### Mission de l'application")
+        st.write("""
+        Cette plateforme universitaire est dédiée à la collecte et à l'analyse descriptive des données de vaccination 
+        pour les enfants âgés de **0 à 10 ans**.
         
-        *Utilisez la barre latérale à gauche pour naviguer entre le formulaire de saisie et les analyses.*
+        **Comment utiliser l'app :**
+        1. Allez dans l'onglet **Enregistrement** pour saisir un nouvel acte médical.
+        2. Consultez le **Dashboard** pour visualiser les statistiques en temps réel.
         """)
     with col2:
-        # Un visuel propre pour l'accueil
-        st.image("​https://www.flaticon.com/fr/icone-gratuite/soins-de-sante_2966486", caption="Santé Publique")
+        st.image(ICON_URL, caption="Santé & Vaccination")
 
-# 4. Logique de Collecte (Avec Ville, Région et Contexte)
-elif page == "Collecte de Données":
-    st.header("Formulaire de Saisie")
+# 4. Page de Collecte (CSV Inclus)
+elif page == "Enregistrement":
+    st.header("Collecte des Données")
     
-    with st.form("vaccination_form", clear_on_submit=True):
-        st.subheader("🔹 Identification de l'enfant")
+    with st.form("main_form", clear_on_submit=True):
+        st.markdown("#### Informations de l'enfant")
         c1, c2 = st.columns(2)
         with c1:
             nom = st.text_input("Nom complet")
-            age = st.slider("Âge (ans)", 0, 10, 5)
+            age = st.number_input("Âge (0-10 ans)", 0, 10)
         with c2:
-            vaccin = st.selectbox("Type de vaccin", ["BCG", "Polio", "DTC", "Rougeole", "Hépatite B", "Fièvre Jaune"])
-            date_acte = st.date_input("Date d'administration")
+            vaccin = st.selectbox("Vaccin", ["BCG", "Polio", "DTC", "Rougeole", "Hépatite B"])
+            date_v = st.date_input("Date")
 
-        st.subheader("🔹 Localisation & Contexte")
+        st.markdown("#### Localisation et Contexte")
         c3, c4 = st.columns(2)
         with c3:
-            region = st.selectbox("Région", ["Centre", "Littoral", "Nord", "Ouest", "Est", "Sud", "Adamaoua", "Extrême-Nord", "Nord-Ouest", "Sud-Ouest"])
-            ville = st.text_input("Ville / District")
+            region = st.selectbox("Région", ["Centre", "Littoral", "Nord", "Ouest", "Est", "Sud"])
+            ville = st.text_input("Ville")
         with c4:
-            contexte = st.radio("Type de lieu", ["Hôpital / Centre de Santé", "Campagne de vaccination mobile"])
+            contexte = st.radio("Type de lieu", ["Hôpital", "Campagne mobile"], horizontal=True)
 
-        submitted = st.form_submit_button("Enregistrer l'acte")
+        submitted = st.form_submit_button("Enregistrer les données")
         
         if submitted:
             if nom and ville:
-                # Création d'un dictionnaire pour les données
-                nouvelle_donnee = {
+                new_data = {
                     "Nom": nom, "Age": age, "Vaccin": vaccin, 
-                    "Date": str(date_acte), "Region": region, 
+                    "Date": str(date_v), "Region": region, 
                     "Ville": ville, "Lieu": contexte
                 }
-                # Sauvegarde locale (CSV)
-                df = pd.DataFrame([nouvelle_donnee])
-                df.to_csv('data.csv', mode='a', index=False, header=not os.path.exists('data.csv'))
-                st.success(f"Enregistrement validé pour {nom} ({ville})")
+                df = pd.DataFrame([new_data])
+                # Sauvegarde CSV
+                df.to_csv(CSV_FILE, mode='a', index=False, header=not os.path.exists(CSV_FILE))
+                st.success(f"✅ Donnée enregistrée pour {nom}")
+                st.balloons()
             else:
-                st.error("Veuillez remplir le nom et la ville.")
+                st.error("⚠️ Veuillez remplir le nom et la ville.")
 
-# 5. Dashboard d'Analyse (Graphes et Statistiques)
-elif page == "📊 Dashboard d'Analyse":
-    st.header("📊 Analyse Descriptive des Données")
+# 5. Page Dashboard (Couleurs et Graphes)
+elif page == "📊 Dashboard Analyse":
+    st.header("📊 Dashboard Décisionnel")
 
-    if os.path.exists('data.csv'):
-        df_load = pd.read_csv('data.csv')
+    if os.path.exists(CSV_FILE):
+        df_load = pd.read_csv(CSV_FILE)
         
-        # --- Ligne 1 : Indicateurs Clés ---
-        kpi1, kpi2, kpi3 = st.columns(3)
-        kpi1.metric("Total Vaccinés", len(df_load))
-        kpi2.metric("Régions couvertes", df_load['Region'].nunique())
-        kpi3.metric("Moyenne d'âge", round(df_load['Age'].mean(), 1))
+        # --- Section Colorée (KPIs) ---
+        st.markdown("### 📈 Indicateurs clés")
+        k1, k2, k3 = st.columns(3)
+        k1.container().metric("Total Enfants", len(df_load))
+        k2.container().metric("Villes couvertes", df_load['Ville'].nunique())
+        k3.container().metric("Âge Moyen", round(df_load['Age'].mean(), 1))
 
-        st.divider()
-
-        # --- Ligne 2 : Graphiques ---
+        st.markdown("---")
+        
+        # --- Graphiques ---
         col_left, col_right = st.columns(2)
-
+        
         with col_left:
             st.subheader("Répartition par Région")
-            fig_region = px.bar(df_load['Region'].value_counts(), 
-                                color_discrete_sequence=['#2E7D32'],
-                                labels={'value':'Nombre', 'index':'Région'})
-            st.plotly_chart(fig_region, use_container_width=True)
+            fig1 = px.bar(df_load['Region'].value_counts(), 
+                         color_discrete_sequence=['#2E7D32'], # Vert
+                         labels={'index': 'Région', 'value': 'Nombre'})
+            st.plotly_chart(fig1, use_container_width=True)
 
         with col_right:
-            st.subheader("Type de lieu d'administration")
-            fig_lieu = px.pie(df_load, names='Lieu', 
-                              color_discrete_sequence=['#004d99', '#808080'],
-                              hole=0.4)
-            st.plotly_chart(fig_lieu, use_container_width=True)
+            st.subheader("Répartition des Lieux")
+            fig2 = px.pie(df_load, names='Lieu', 
+                         color_discrete_sequence=['#004d99', '#2E7D32']) # Bleu et Vert
+            st.plotly_chart(fig2, use_container_width=True)
 
-        # --- Ligne 3 : Histogramme de l'âge ---
-        st.subheader("Distribution des âges des enfants")
-        fig_age = px.histogram(df_load, x="Age", nbins=10, 
-                               color_discrete_sequence=['#004d99'],
-                               labels={'Age':'Âge de l\'enfant'})
-        st.plotly_chart(fig_age, use_container_width=True)
-        
-        # Affichage du tableau brut
-        with st.expander("Voir les données brutes"):
-            st.dataframe(df_load, use_container_width=True)
+        st.subheader("Histogramme des Âges")
+        fig3 = px.histogram(df_load, x="Age", nbins=10, 
+                            color_discrete_sequence=['#004d99']) # Bleu
+        st.plotly_chart(fig3, use_container_width=True)
+
     else:
-        st.warning("Aucune donnée disponible. Veuillez d'abord remplir le formulaire.")
+        st.warning("ℹ️ Aucune donnée disponible. Le fichier CSV sera créé après votre premier enregistrement.")
