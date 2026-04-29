@@ -6,7 +6,7 @@ import os
 # 1. Configuration de la page (Design épuré)
 st.set_page_config(
     page_title="VaxData | Collecte & Analyse",
-    page_icon="​",
+    page_icon="🛡️​",
     layout="wide"
 )
 
@@ -39,7 +39,7 @@ if page == "Accueil":
         """)
     with col2:
         # Un visuel propre pour l'accueil
-        st.image("https://images.unsplash.com/photo-1576091160550-2173dbc999ef?q=80&w=400", caption="Santé Publique")
+        st.image("​https://www.flaticon.com/fr/icone-gratuite/soins-de-sante_2966486", caption="Santé Publique")
 
 # 4. Logique de Collecte (Avec Ville, Région et Contexte)
 elif page == "Collecte de Données":
@@ -99,7 +99,7 @@ elif page == "📊 Dashboard d'Analyse":
         col_left, col_right = st.columns(2)
 
         with col_left:
-            st.subheader("📍 Répartition par Région")
+            st.subheader("Répartition par Région")
             fig_region = px.bar(df_load['Region'].value_counts(), 
                                 color_discrete_sequence=['#2E7D32'],
                                 labels={'value':'Nombre', 'index':'Région'})
