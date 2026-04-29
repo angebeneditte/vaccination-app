@@ -1,0 +1,19 @@
+[theme]
+# Bleu professionnel pour les boutons et composants actifs
+primaryColor = "#004d99"
+
+# Fond blanc pur pour la clarté
+backgroundColor = "#FFFFFF"
+
+# Gris très clair pour la barre latérale et les zones secondaires
+secondaryBackgroundColor = "#F8F9FA"
+
+# Texte sombre (presque noir) pour une lecture parfaite
+textColor = "#262730"
+
+# Police sans-serif moderne
+font = "sans serif"
+
+[server]
+# Désactive la barre de menu en haut pour un look plus "App" que "Dashboard"
+toolbarMode = "minimal"
