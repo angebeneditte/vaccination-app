@@ -6,7 +6,7 @@ primaryColor = "#004d99"
 backgroundColor = "#ffffff"
 
 # Gris très clair pour la barre latérale et les zones secondaires
-secondaryBackgroundColor = "#0a20ea7b"
+secondaryBackgroundColor = "#939be0d0"
 
 # Texte sombre (presque noir) pour une lecture parfaite
 textColor = "rgb(2, 5, 15)"
