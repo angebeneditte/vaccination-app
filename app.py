@@ -116,12 +116,12 @@ elif page == "📊 Dashboard Analyse":
         with col_right:
             st.subheader("Répartition des Lieux")
             fig2 = px.pie(df_load, names='Lieu', 
-                         color_discrete_sequence=["#0d62b6f5", '#2E7D32']) # Bleu et Vert
+                         color_discrete_sequence=["#0d62b6", '#2E7D32']) # Bleu et Vert
             st.plotly_chart(fig2, use_container_width=True)
 
         st.subheader("Histogramme des Âges")
         fig3 = px.histogram(df_load, x="Age", nbins=10, 
-                            color_discrete_sequence=['#004d99']) # Bleu
+                            color_discrete_sequence=['#0d62b6', '#2E7D32']) # Bleu
         st.plotly_chart(fig3, use_container_width=True)
 
     else:
