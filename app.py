@@ -77,7 +77,7 @@ elif page == "Enregistrement":
                 new_data = {
                     "Nom": nom, "Age": age, "Vaccin": vaccin, 
                     "Date": str(date_v), "Region": region, 
-                    "Ville": ville, "Lieu": contexte
+                    "Ville/Localite": ville, "Lieu": contexte
                 }
                 df = pd.DataFrame([new_data])
                 # Sauvegarde CSV
