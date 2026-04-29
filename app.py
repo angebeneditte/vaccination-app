@@ -7,7 +7,8 @@ import os
 st.set_page_config(
     page_title="VaxData | Collecte & Analyse",
     page_icon="🏥",
-    layout="wide"
+    layout="wide",
+    initial_sidebar_state="expanded"
 )
 
 # Icône de secours (Lien direct valide vers une icône de santé)
@@ -34,14 +35,15 @@ if page == "Accueil":
     st.title("🛡️ Bienvenue sur VaxData")
     col1, col2 = st.columns([2, 1])
     with col1:
-        st.info("### Mission de l'application")
-        st.write("""
-        Cette plateforme universitaire est dédiée à la collecte et à l'analyse descriptive des données de vaccination 
-        pour les enfants âgés de **0 à 10 ans**.
+        st.markdown("""
+        ### Mission de l'application
+        Cette interface professionnelle est conçue pour les agents de santé et les administrateurs. 
+        Elle permet de :
+        * **Collecter** les données de vaccination en temps réel.
+        * **Suivre** la couverture vaccinale par ville et par région.
+        * **Analyser** les performances des campagnes mobiles par rapport aux hôpitaux.
         
-        **Comment utiliser l'app :**
-        1. Allez dans l'onglet **Enregistrement** pour saisir un nouvel acte médical.
-        2. Consultez le **Dashboard** pour visualiser les statistiques en temps réel.
+        *Utilisez la barre latérale à gauche pour naviguer entre le formulaire de saisie et les analyses.*
         """)
     with col2:
         st.image(ICON_URL, caption="Santé & Vaccination")
@@ -114,7 +116,7 @@ elif page == "📊 Dashboard Analyse":
         with col_right:
             st.subheader("Répartition des Lieux")
             fig2 = px.pie(df_load, names='Lieu', 
-                         color_discrete_sequence=['#004d99', '#2E7D32']) # Bleu et Vert
+                         color_discrete_sequence=["#0d62b6f5", '#2E7D32']) # Bleu et Vert
             st.plotly_chart(fig2, use_container_width=True)
 
         st.subheader("Histogramme des Âges")
@@ -123,4 +125,4 @@ elif page == "📊 Dashboard Analyse":
         st.plotly_chart(fig3, use_container_width=True)
 
     else:
-        st.warning("ℹ️ Aucune donnée disponible. Le fichier CSV sera créé après votre premier enregistrement.")
+        st.warning("ℹ️ Aucune donnée disponible!.")
